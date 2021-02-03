@@ -7,8 +7,8 @@ from aiogram.dispatcher.filters.state import State, StatesGroup
 from aiogram.contrib.fsm_storage.memory import MemoryStorage
 from aiogram.dispatcher import FSMContext
 from aiogram.utils.executor import start_webhook
-from network_test import *  # Import architecture
-from help_functions import *  # Import help functions
+from network_gans import *  # Import architecture
+from functions import *  # Import help functions
 
 
 # Set API_TOKEN. You must have your own.
@@ -103,7 +103,7 @@ async def creator(message: types.Message):
     """Displays information about the bot's Creator."""
 
     await message.answer(text="I'm student of Deep Learning School (by MIPT) and also Data Analytics School (by X5 Retail Group). Work in PwC (Data analyst)"
-    "and in 'School of programmers' (Teacher)\n\nLink to GitHub \U0001F4BB: https://github.com/PsychoBel\nContact with me \U0001F4EB: @psycho1388", reply_markup=buttons_for_start)
+    " and in 'School of programmers' (Teacher)\n\nLink to GitHub \U0001F4BB: https://github.com/PsychoBel\nContact with me \U0001F4EB: @psycho1388", reply_markup=buttons_for_start)
 
 
 @dp.message_handler(commands="set_commands", state='*')
@@ -356,23 +356,18 @@ async def catch_bad_commands(message: types.Message):
 
 async def on_startup(dp):
     await bot.set_webhook(WEBHOOK_URL)
-    # insert code here to run it after start
+    logging.info(f"Start webhook..\tWEBAPP_HOST-{WEBAPP_HOST}; WEBAPP_PORT-{WEBAPP_PORT};\n"
+                 f"WEBAPP_URL-{WEBHOOK_URL};")
 
 
 async def on_shutdown(dp):
     logging.warning('Shutting down..')
-
-    # insert code here to run it before shutdown
-
-    # Close DB connection (if used)
     await dp.storage.close()
     await dp.storage.wait_closed()
-
     logging.warning('Bye!')
 
 
 if __name__ == '__main__':
-   # executor.start_polling(dp, skip_updates=True)
 
     start_webhook(
         dispatcher=dp,
