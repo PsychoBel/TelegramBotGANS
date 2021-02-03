@@ -3,4 +3,5 @@ async-generator==1.10
 async-timeout==3.0.1
 aiohttp==3.7.3
 requests==2.22.0
-
+numpy==1.19.5
+torch==1.7.1
