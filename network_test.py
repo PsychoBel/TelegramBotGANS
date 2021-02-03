@@ -1,6 +1,6 @@
 import numpy as np
 
-from torch import Tensor, bmm
+import torch
 import torch.nn as nn
 from torch.autograd import Variable
 
