@@ -6,24 +6,24 @@ from aiogram import Bot, Dispatcher, executor, types
 from aiogram.dispatcher.filters.state import State, StatesGroup
 from aiogram.contrib.fsm_storage.memory import MemoryStorage
 from aiogram.dispatcher import FSMContext
+from aiogram.utils.executor import start_webhook
 from network_test import *  # Import architecture
 from help_functions import *  # Import help functions
 
 
 # Set API_TOKEN. You must have your own.
 
-os.environ['BOT_TOKEN'] = '1493795858:AAHbapu4DqavgnpyO4ztc95mY3zUKl2USI4'
 
 BOT_TOKEN = os.environ['BOT_TOKEN']
 
 # webhook settings
-# WEBHOOK_HOST = os.environ['WEBHOOK_HOST_ADDR']
-# WEBHOOK_PATH = f'/webhook/{BOT_TOKEN}'
-# WEBHOOK_URL = f"{WEBHOOK_HOST}{WEBHOOK_PATH}"
-#
-# # webserver settings
-# WEBAPP_HOST = '0.0.0.0'  # or ip
-# WEBAPP_PORT = os.environ['PORT']
+WEBHOOK_HOST = os.environ['WEBHOOK_HOST_ADDR']
+WEBHOOK_PATH = f'/webhook/{BOT_TOKEN}'
+WEBHOOK_URL = f"{WEBHOOK_HOST}{WEBHOOK_PATH}"
+
+# webserver settings
+WEBAPP_HOST = '0.0.0.0'  # or ip
+WEBAPP_PORT = os.environ['PORT']
 
 # Configure logging.
 logging.basicConfig(level=logging.INFO)
@@ -375,8 +375,8 @@ async def on_shutdown(dp):
 
 
 if __name__ == '__main__':
-    executor.start_polling(dp, skip_updates=True)
-    '''
+   # executor.start_polling(dp, skip_updates=True)
+
     start_webhook(
         dispatcher=dp,
         webhook_path=WEBHOOK_PATH,
@@ -386,4 +386,4 @@ if __name__ == '__main__':
         host=WEBAPP_HOST,
         port=WEBAPP_PORT,
     )
-    '''
+    
