@@ -11,13 +11,25 @@ from help_functions import *  # Import help functions
 
 
 # Set API_TOKEN. You must have your own.
-API_TOKEN = '1493795858:AAHbapu4DqavgnpyO4ztc95mY3zUKl2USI4'
+
+os.environ['BOT_TOKEN'] = '1493795858:AAHbapu4DqavgnpyO4ztc95mY3zUKl2USI4'
+
+BOT_TOKEN = os.environ['BOT_TOKEN']
+
+# webhook settings
+# WEBHOOK_HOST = os.environ['WEBHOOK_HOST_ADDR']
+# WEBHOOK_PATH = f'/webhook/{BOT_TOKEN}'
+# WEBHOOK_URL = f"{WEBHOOK_HOST}{WEBHOOK_PATH}"
+#
+# # webserver settings
+# WEBAPP_HOST = '0.0.0.0'  # or ip
+# WEBAPP_PORT = os.environ['PORT']
 
 # Configure logging.
 logging.basicConfig(level=logging.INFO)
 
 # Initialize bot and dispatcher.
-bot = Bot(token=API_TOKEN)
+bot = Bot(token=BOT_TOKEN)
 dp = Dispatcher(bot, storage=MemoryStorage())
 
 # Initialize the net.
@@ -342,5 +354,36 @@ async def catch_bad_commands(message: types.Message):
                          reply_markup=buttons_for_start, parse_mode='Markdown')
 
 
+async def on_startup(dp):
+    await bot.set_webhook(WEBHOOK_URL)
+    # insert code here to run it after start
+
+
+async def on_shutdown(dp):
+    logging.warning('Shutting down..')
+
+    # insert code here to run it before shutdown
+
+    # Remove webhook (not acceptable in some cases)
+    await bot.delete_webhook()
+
+    # Close DB connection (if used)
+    await dp.storage.close()
+    await dp.storage.wait_closed()
+
+    logging.warning('Bye!')
+
+
 if __name__ == '__main__':
     executor.start_polling(dp, skip_updates=True)
+    '''
+    start_webhook(
+        dispatcher=dp,
+        webhook_path=WEBHOOK_PATH,
+        on_startup=on_startup,
+        on_shutdown=on_shutdown,
+        skip_updates=True,
+        host=WEBAPP_HOST,
+        port=WEBAPP_PORT,
+    )
+    '''
