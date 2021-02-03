@@ -1,6 +1,6 @@
 import numpy as np
 
-import torch
+from torch import Tensor, bmm
 import torch.nn as nn
 from torch.autograd import Variable
 
@@ -20,9 +20,9 @@ class Inspiration(nn.Module):
     def __init__(self, C, B=1):
         super(Inspiration, self).__init__()
         # B is equal to 1 or input mini_batch
-        self.weight = nn.Parameter(torch.Tensor(1, C, C), requires_grad=True)
+        self.weight = nn.Parameter(Tensor(1, C, C), requires_grad=True)
         # non-parameter buffer
-        self.G = Variable(torch.Tensor(B, C, C), requires_grad=True)
+        self.G = Variable(Tensor(B, C, C), requires_grad=True)
         self.C = C
         self.reset_parameters()
 
@@ -34,8 +34,8 @@ class Inspiration(nn.Module):
 
     def forward(self, X):
         # input X is a 3D feature map
-        self.P = torch.bmm(self.weight.expand_as(self.G), self.G)
-        return torch.bmm(
+        self.P = bmm(self.weight.expand_as(self.G), self.G)
+        return bmm(
             self.P.transpose(1, 2).expand(X.size(0), self.C, self.C),
             X.view(X.size(0), X.size(1), -1)).view_as(X)
 

@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="0f83efc7-6a29-4b1b-8930-67b160b28455" name="Default Changelist" comment="" />
+    <list default="true" id="0f83efc7-6a29-4b1b-8930-67b160b28455" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/network_test.py" beforeDir="false" afterPath="$PROJECT_DIR$/network_test.py" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
