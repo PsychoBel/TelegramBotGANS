@@ -1,1 +1,1 @@
-web: python echoBot.py
+web: python main.py
