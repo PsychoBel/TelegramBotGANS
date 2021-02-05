@@ -23,7 +23,7 @@ WEBAPP_PORT = os.environ['PORT']
 logging.basicConfig(level=logging.INFO)
 
 # Initialize bot and dispatcher
-bot = Bot(token=API_TOKEN)
+bot = Bot(token=BOT_TOKEN)
 dp = Dispatcher(bot)
 
 
@@ -47,7 +47,7 @@ async def cats(message: types.Message):
             reply_to_message_id=message.message_id,
         )
         '''
-
+        logging.info("Cats starts")
         await message.reply_photo(photo, caption='Cats are here 😺')
 
 
@@ -55,7 +55,7 @@ async def cats(message: types.Message):
 async def echo(message: types.Message):
     # old style:
     # await bot.send_message(message.chat.id, message.text)
-
+    logging.info("Echo starts")
     await message.answer(message.text)
 
 
