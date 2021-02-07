@@ -166,7 +166,7 @@ async def weather_in_city(message: types.Message, state: FSMContext):
         data = res.json()
         city_id = data['list'][0]['id']
     except Exception as e:
-        await message.answer(text="Sorry, I couldn't find this city")
+        await message.answer(text="Sorry, I couldn't find this city", reply_markup=buttons_for_start)
         flag = True
         await state.finish()
 
@@ -180,7 +180,7 @@ async def weather_in_city(message: types.Message, state: FSMContext):
         await state.finish()
     except Exception as e:
         if not flag:
-            await message.answer(text="Sorry, I couldn't find this city")
+            await message.answer(text="Sorry, I couldn't find this city", reply_markup=buttons_for_start)
             await state.finish()
 
 
@@ -322,9 +322,9 @@ async def processing(message: types.Message, state: FSMContext):
     if message.text == 'Bad quality \U0001F534, Fast processing \U0001F7E2':
         image_size = 128
     elif message.text == 'Medium quality \U0001F7E0, Medium processing \U0001F7E0':
-        image_size = 256
+        image_size = 130 # 256 (130 just for project because problems with memory in Heroku) 
     else:
-        image_size = 300
+        image_size = 135 # 300 (135 just for project because problems with memory in Heroku)
 
     await message.answer(text='Style transfering starts. '
                               'Wait a little bit \U0001F558',
