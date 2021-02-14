@@ -13,7 +13,7 @@ from functions import *  # Import help functions
 
 # Set API_TOKEN. You must have your own.
 
-
+CREATOR_ID = os.environ['CREATOR_ID']
 BOT_TOKEN = os.environ['BOT_TOKEN']
 
 # webhook settings
@@ -108,7 +108,7 @@ async def creator(message: types.Message):
 
 @dp.message_handler(commands="set_commands", state='*')
 async def cmd_set_commands(message: types.Message):
-    if message.from_user.id == 267917903:
+    if message.from_user.id == CREATOR_ID:
         commands = [types.BotCommand(command="/transfer", description="Initialize style transfer"),
                     types.BotCommand(command="/help", description="Description of me"),
                     types.BotCommand(command="/creator", description="Information about my creator"),
@@ -213,6 +213,7 @@ async def help_message(message: types.Message):
 async def start_style_transfer(message: types.Message):
     global user_id
     user_id = str(message.from_user.id)
+    logging.info(f"USER {user_id} STARTS STYLE TRANSFER")
     await message.answer(text="Let's start \U0001F4AB\n"
                               "Send me *content* image please", parse_mode='Markdown')
     await GetPictures.waiting_for_photos.set()
@@ -228,6 +229,7 @@ async def photo_processing(message):
 
     # The bot is waiting for a picture with content from the user.
     if not content_flag:
+        logging.info(f"USER {user_id} DOWNLOAD CONTENT IMAGE")
         await message.photo[-1].download('content' + user_id + '.jpg')
         await message.answer(text='Cool! I got content image! \U0001F525\n'
                                   '*Now, send me style image please.*\n\n'
@@ -238,6 +240,7 @@ async def photo_processing(message):
 
     # The bot is waiting for a picture with style from the user.
     else:
+        logging.info(f"USER {user_id} DOWNLOAD STYLE IMAGE")
         await message.photo[-1].download('style' + user_id + '.jpg')
         await message.answer(text='Perfect! I gor style image! \U000026A1\n'
                                   '*Now, press /initialize or *button below* to start style transfer*\n\n'
@@ -260,9 +263,11 @@ async def photo_processing(message: types.Message):
     global style_flag
     # Let's make sure that there is something to cancel.
     if content_flag and style_flag:
+        logging.info(f"USER {user_id} WANT NEW STYLE IMAGE")
         await message.answer(text="Choose new style image")
         await GetPictures.waiting_for_another_photos.set()
     else:
+        logging.info(f"USER {user_id} WANT NEW CONTENT IMAGE")
         await message.answer(text="Choose new content image")
         await GetPictures.waiting_for_another_photos.set()
 
@@ -272,7 +277,7 @@ async def photo_processing(message):
     global content_flag
     global style_flag
     if content_flag and style_flag:
-
+        logging.info(f"USER {user_id} DOWNLOAD STYLE IMAGE")
         await message.photo[-1].download('style' + user_id + '.jpg')
         await message.answer(text='Perfect! I gor style image! \U000026A1\n'
                                   '*Now, press /initialize or button below to start style transfer*\n\n'
@@ -280,6 +285,7 @@ async def photo_processing(message):
                                   'another content image.', reply_markup=buttons_for_style, parse_mode='Markdown')
         await GetPictures.waiting_for_photos.set()
     else:
+        logging.info(f"USER {user_id} DOWNLOAD CONTENT IMAGE")
         await message.photo[-1].download('content' + user_id + '.jpg')
         await message.answer(text='Cool! I got content image! \U0001F525\n'
                                   '*Now, send me style image please.*\n\n'
@@ -294,6 +300,7 @@ async def run_style_transfer(message: types.Message, state: FSMContext):
     """Preparing for image processing."""
 
     # Let's make sure that the user has added both images.
+    logging.info(f"USER {user_id} INITIALIZE")
     if not (content_flag * style_flag):  # Conjunction
         await message.answer(text="Upload both images please.")
         return
