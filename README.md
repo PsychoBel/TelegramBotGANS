@@ -1,5 +1,5 @@
 # TelegramBotGANS
-[Telegram Bot](https://t.me/Psyimgbot) for DLS Final Project
+[Telegram Bot](https://t.me/Psyimgbot)
 
 ### Bot description
 **The bot can transfer a style from one picture to another picture, like this:**
